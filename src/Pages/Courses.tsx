@@ -6,16 +6,20 @@ import {
   AccordionSummary,
 } from "../Components/Reused styled components/Accordions";
 import { Link, Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 const defaultData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 const Courses = () => {
-  const [dataBlocks, setDataBlocks] = useState<Array<number>>(defaultData);
+  const [dataBlocks, setDataBlocks] = useState<Array<number>>([]);
   const [dataTasks, setDataTasks] = useState<Array<number>>(
-    defaultData.slice(0, 5)
+    []
   );
-  const { primary, secondary, accent, rounding } = useThemization();
+  useEffect(() => {
+    setDataBlocks(defaultData)
+    setDataTasks(defaultData.slice(0, 5))
+  }, []);
+  const { primary, secondary, rounding } = useThemization();
   return (
     <GradientBox styles={{ pt: "72px" }}>
       <Box sx={{ display: "flex" }}>
@@ -44,7 +48,7 @@ const Courses = () => {
           }}
         >
           {/* <Box sx={{position: "absolute"}}></Box> */}
-          {dataBlocks.map((elem, index) => {
+          {dataBlocks.map((_, index) => {
             return (
               <Accordion key={nanoid()} sx={{ fontFamily: "orbitron" }}>
                 <AccordionSummary>
@@ -73,7 +77,7 @@ const Courses = () => {
                     },
                   }}
                 >
-                  {dataTasks.map((elem, idx) => {
+                  {dataTasks.map((_, idx) => {
                     const id = nanoid();
                     return <Link key={id} state={{from: `Block ${index +1} / Task ${idx + 1}`}} to={id}>{`Task ${idx + 1}`}</Link>;
                   })}

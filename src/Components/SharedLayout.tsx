@@ -17,7 +17,7 @@ export const StyledLink = ({
   );
 };
 const SharedLayout = () => {
-  const { primary, secondary, accent, rounding } = useThemization();
+  const { primary, secondary, rounding } = useThemization();
   return (
     <Container
       disableGutters

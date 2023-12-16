@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useThemization } from "../Hooks/ThemizationHook";
 import GradientBox from "../Components/Reused styled components/GradientBox";
 

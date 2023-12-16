@@ -4,12 +4,9 @@ import MuiAccordionSummary, {
   AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import { useThemization } from "../../Hooks/ThemizationHook";
-
 export const Accordion = styled((props: AccordionProps) => (
-  // const {secondary} = useThemization();
   <MuiAccordion disableGutters elevation={0} {...props} />
-))(({ theme }) => ({
+))(() => ({
   backgroundColor: "transparent",
   borderRadius: "8px",
   border: "1px solid",
@@ -36,7 +33,7 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
     }
     {...props}
   />
-))(({ theme }) => ({
+))(() => ({
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
 },

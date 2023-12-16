@@ -1,7 +1,7 @@
 import { Editor, Monaco } from "@monaco-editor/react";
 import { Box, Button, Typography } from "@mui/material";
 import { useRef } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { useThemization } from "../Hooks/ThemizationHook";
 
@@ -10,7 +10,6 @@ const defValue = `public Map<String,String> getContextUserInformation(){
 }`;
 const Task = () => {
   const { secondary, primary, rounding } = useThemization();
-  //   const { id } = useParams();
   const location = useLocation();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
