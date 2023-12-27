@@ -15,7 +15,7 @@ const Task = () => {
 
   const handleEditorDidMount = (
     editor: monaco.editor.IStandaloneCodeEditor,
-    monaco: Monaco
+    _: Monaco
   ) => {
     editorRef.current = editor;
   };

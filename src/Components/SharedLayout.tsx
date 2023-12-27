@@ -2,7 +2,6 @@ import { DataObject } from "@mui/icons-material";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useThemization } from "../Hooks/ThemizationHook";
-import { login } from "../API's/auth";
 import { useSelector } from "react-redux";
 import { selectInstance, selectIsLoggedIn } from "../Redux/Auth/selectors";
 
@@ -23,13 +22,6 @@ const SharedLayout = () => {
   const { primary, secondary, rounding } = useThemization();
   const loggedIn = useSelector(selectIsLoggedIn);
   const instance = useSelector(selectInstance);
-  const sfLogin = () => {
-    try {
-      login();
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <Container
       disableGutters
