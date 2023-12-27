@@ -18,7 +18,6 @@ const Task = () => {
     monaco: Monaco
   ) => {
     editorRef.current = editor;
-    console.log(monaco);
   };
 
   const showValue = () => {
@@ -28,7 +27,6 @@ const Task = () => {
   const options: monaco.editor.IStandaloneEditorConstructionOptions = {
     fontSize: 16,
     codeLens: false,
-    // fontFamily: "ubuntu",
     minimap: {
       enabled: true,
     },
@@ -40,7 +38,6 @@ const Task = () => {
         sx={{
           display: "flex",
           alignItems: "start",
-          //   justifyContent: "space-between",
           gap: "40px",
           position: "relative",
         }}

@@ -2,6 +2,9 @@ import { DataObject } from "@mui/icons-material";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useThemization } from "../Hooks/ThemizationHook";
+import { login } from "../API's/auth";
+import { useSelector } from "react-redux";
+import { selectInstance, selectIsLoggedIn } from "../Redux/Auth/selectors";
 
 export const StyledLink = ({
   to,
@@ -18,13 +21,22 @@ export const StyledLink = ({
 };
 const SharedLayout = () => {
   const { primary, secondary, rounding } = useThemization();
+  const loggedIn = useSelector(selectIsLoggedIn);
+  const instance = useSelector(selectInstance);
+  const sfLogin = () => {
+    try {
+      login();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Container
       disableGutters
       maxWidth="xl"
       sx={{
         bgcolor: primary.light,
-        height: "fit-content"
+        height: "fit-content",
       }}
     >
       <Box
@@ -87,22 +99,39 @@ const SharedLayout = () => {
           <StyledLink to="/courses">Courses</StyledLink>
           <StyledLink to="/about">About</StyledLink>
         </Box>
-        <Button
-          sx={{
-            bgcolor: primary.dark,
-            color: "white",
-            ml: "auto",
-            border: `2px solid ${secondary.main}`,
-            borderRadius: rounding.md,
-            fontWeight: 700,
-            ":hover": {
-              bgcolor: secondary.main,
-              color: "black",
-            },
-          }}
-        >
-          Login to Salesforce
-        </Button>
+        {loggedIn ? (
+          <Typography
+            sx={{
+              letterSpacing: "0.05em",
+              fontWeight: 500,
+              fontSize: 18,
+              mt: "2px",
+              ml: "auto",
+              color: "white",
+            }}
+          >{instance}</Typography>
+        ) : (
+          <Link
+            to="https://learn-apex-backend.onrender.com/oauth2"
+            style={{ marginLeft: "auto" }}
+          >
+            <Button
+              sx={{
+                bgcolor: primary.dark,
+                color: "white",
+                border: `2px solid ${secondary.main}`,
+                borderRadius: rounding.md,
+                fontWeight: 700,
+                ":hover": {
+                  bgcolor: secondary.main,
+                  color: "black",
+                },
+              }}
+            >
+              Login to Salesforce
+            </Button>
+          </Link>
+        )}
       </Box>
       <Outlet />
     </Container>
