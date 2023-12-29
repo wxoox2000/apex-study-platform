@@ -6,5 +6,6 @@ export const useThemization = () => {
     const accent = useTheme().palette.accent;
     const rounding = useTheme().borderRadius;
     const breakpoints = useTheme().breakpoints;
-  return { primary, secondary, accent, rounding, breakpoints };
+    const gradients = useTheme().gradients;
+  return { primary, secondary, accent, rounding, breakpoints, gradients };
 };

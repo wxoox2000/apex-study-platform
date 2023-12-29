@@ -4,12 +4,13 @@ import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { useThemization } from "../Hooks/ThemizationHook";
+import { toRGB } from "../Components/Reused styled components/HexToRGBA";
 
 const defValue = `public Map<String,String> getContextUserInformation(){
     //code here
 }`;
 const Task = () => {
-  const { secondary, primary, rounding } = useThemization();
+  const { secondary, primary, rounding, gradients, accent } = useThemization();
   const location = useLocation();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
@@ -49,17 +50,19 @@ const Task = () => {
             position: "relative",
             zIndex: 10,
             backgroundImage: "inherit",
+            borderRadius: rounding.lg,
+            boxShadow: `3px 3px 5px -1px ${toRGB(primary.dark,0.5)}, 7px 6px 8px 1px ${toRGB(primary.dark,0.3)}, 0px 0px 7px -1px ${toRGB(primary.dark,0.5)}`
           }}
         >
           <Box
             sx={{
-              width: "450px",
+              width: "434px",
               height: "16px",
               position: "absolute",
               bottom: "5px",
-              left: "5px",
-              bgcolor: primary.light,
-              borderBottomLeftRadius: rounding.lg,
+              left: "18px",
+              bgcolor: secondary.light,
+              borderBottomLeftRadius: rounding.sm,
               borderBottomRightRadius: rounding.lg,
               zIndex: 15,
             }}
@@ -75,15 +78,8 @@ const Task = () => {
               position: "absolute",
               top: 0,
               left: 0,
-              backgroundImage: `linear-gradient(
-                0deg,
-                hsl(231deg 48% 48%) 0%,
-                hsl(271deg 30% 50%) 32%,
-                hsl(318deg 30% 52%) 45%,
-                hsl(345deg 48% 59%) 56%,
-                hsl(3deg 72% 65%) 69%,
-                hsl(14deg 100% 63%) 100%
-              );`,
+              bgcolor: secondary.main,
+              // backgroundImage: gradients.darkBlue_purple,
             }}
           ></Box>
           <Box
@@ -93,7 +89,7 @@ const Task = () => {
               overflowY: "scroll",
               scrollbarWidth: "none",
               msOverflowStyle: "none",
-              px: 1,
+              px: 2,
               py: 2,
               "::-webkit-scrollbar": {
                 display: "none",
@@ -104,19 +100,20 @@ const Task = () => {
               position: "absolute",
               top: "5px",
               left: "5px",
-              bgcolor: primary.light,
+              bgcolor: secondary.light,
               borderRadius: rounding.md,
+              boxShadow: `inset 3px 1px 5px 0px ${toRGB(primary.dark,0.6)}`
             }}
           >
             <Typography
               component={"h3"}
-              sx={{ fontSize: 26, fontWeight: 600, color: "white", mb: 1 }}
+              sx={{ fontSize: 26, fontWeight: 600, color: accent.black, mb: 1 }}
             >
               {location.state?.from ? location.state.from : "Task"}
             </Typography>
             <Typography
               component={"p"}
-              sx={{ fontSize: 18, fontWeight: 300, color: "white" }}
+              sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
             >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
               laudantium, iste porro atque similique voluptates veniam debitis
@@ -178,17 +175,26 @@ const Task = () => {
               mt: 5,
               px: 3,
               py: 2,
-              bgcolor: primary.dark,
-              color: "white",
+              color: primary.dark,
               ml: "auto",
-              border: `2px solid ${secondary.main}`,
+              border: `2px solid transparent`,
               borderRadius: rounding.md,
               fontWeight: 700,
+              backgroundBlendMode: "overlay",
+              backgroundImage: gradients.blue_steel,
+              bgcolor: secondary.light,
+              boxShadow: `inset 3px 2px 7px 0px ${toRGB(primary.dark,0.5)}, inset 5px 4px 10px 2px ${toRGB(primary.dark,0.25)}, 3px 2px 4px -1px ${toRGB(primary.dark,0.6)}, 4px 5px 8px 0px ${toRGB(primary.dark,0.3)}, 0px 0px 8px -1px ${toRGB(primary.dark,0.5)}`,
               ":hover": {
-                bgcolor: secondary.main,
-                color: "black",
+                bgcolor: "transparent",
+                boxShadow: `inset 3px 2px 7px 0px ${toRGB(
+                  secondary.light,
+                  0.6
+                )}, inset 5px 4px 10px 2px ${toRGB(
+                  secondary.light,
+                  0.35
+                )}, 3px 2px 4px -1px ${toRGB(primary.dark,0.6)}, 4px 5px 8px 0px ${toRGB(primary.dark,0.3)}, 0px 0px 8px -1px ${toRGB(primary.dark,0.5)}`,
+                color: "white",
               },
-  
             }}
             onClick={showValue}
           >

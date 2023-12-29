@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "modern-normalize";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { indigo, deepOrange, purple } from "@mui/material/colors";
 
 import "@fontsource/ubuntu/300.css";
 import "@fontsource/ubuntu/400.css";
@@ -28,7 +27,15 @@ declare module "@mui/material/styles" {
       lg: "12px";
       xl: "16px";
       "2xl": "20px";
-    };
+    },
+    gradients: {
+      lime_skyBlue: "linear-gradient(270deg, #90B6FF 49.92%, #DDFF95 122.79%)",
+      blue_purple: "linear-gradient(92deg, #4BAFFF 1.97%, rgba(189, 33, 228, 0.64) 41.64%)",
+      rose_cyan: "linear-gradient(270deg, #99FFF9 0%, #FFB7EB 56.12%)",
+      peach: "linear-gradient(90deg, #FFAAB4 0.03%, rgba(255, 235, 165, 0.87) 102.59%)",
+      darkBlue_purple: "linear-gradient(90deg, #7A5AF8 10%, #FF22E9 89.43%)",
+      blue_steel: "linear-gradient(241deg, #9B8AFB 47.48%, #5022D4 80.73%, #7F49FF 100.87%)"
+    }
   }
   interface ThemeOptions {
     borderRadius?: {
@@ -37,33 +44,44 @@ declare module "@mui/material/styles" {
       lg?: string;
       xl?: string;
       "2xl"?: string;
-    };
+    },
+    gradients?: {
+      lime_skyBlue: string;
+      blue_purple: string;
+      rose_cyan: string;
+      peach: string;
+      darkBlue_purple: string;
+      blue_steel: string;
+    }
   }
   interface Palette {
-    accent: Palette["primary"];
+    accent: {
+      black: string;
+      grey: string;
+    };
   }
 
   interface PaletteOptions {
-    accent?: PaletteOptions["primary"];
+    accent?: {
+      black: string;
+      grey: string;
+    };
   }
 }
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: indigo[500],
-      light: indigo[300],
-      dark: indigo[700],
+      dark: "#7A5AF8",
+      main: "#98ABFB",
     },
     secondary: {
-      main: deepOrange[400],
-      light: deepOrange[200],
-      dark: deepOrange[500],
+      main: "#DFC7FF",
+      light: "#F8F7FF",
     },
     accent: {
-      main: purple[400],
-      light: purple[200],
-      dark: purple[500],
+      black: "#040404",
+      grey: "#bbbbbb",
     },
   },
   borderRadius: {
@@ -72,6 +90,14 @@ const theme = createTheme({
     lg: "12px",
     xl: "16px",
     "2xl": "20px",
+  },
+  gradients: {
+    lime_skyBlue: "linear-gradient(270deg, #90B6FF 49.92%, #DDFF95 122.79%)",
+    blue_purple: "linear-gradient(92deg, #4BAFFF 1.97%, rgba(189, 33, 228, 0.64) 41.64%)",
+    rose_cyan: "linear-gradient(270deg, #99FFF9 0%, #FFB7EB 56.12%)",
+    peach: "linear-gradient(90deg, #FFAAB4 0.03%, rgba(255, 235, 165, 0.87) 102.59%)",
+    darkBlue_purple: "linear-gradient(90deg, #7A5AF8 10%, #FF22E9 89.43%)",
+    blue_steel: "linear-gradient(241deg, #9B8AFB 47.48%, #5022D4 80.73%, #7F49FF 100.87%)"
   },
   typography: {
     fontFamily: ["orbitron", "ubuntu"].join(","),

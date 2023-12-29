@@ -19,7 +19,7 @@ export const StyledLink = ({
   );
 };
 const SharedLayout = () => {
-  const { primary, secondary, rounding } = useThemization();
+  const { primary, secondary, rounding, gradients } = useThemization();
   const loggedIn = useSelector(selectIsLoggedIn);
   const instance = useSelector(selectInstance);
   return (
@@ -39,12 +39,17 @@ const SharedLayout = () => {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          bgcolor: primary.main,
+          backgroundImage: gradients.blue_steel,
           position: "fixed",
-          zIndex: 10,
+          zIndex: 1000,
           width: "100%",
-          borderBottom: `1px solid ${secondary.light}`,
-          boxShadow: `0px 2px 8px -1px rgba(255, 171, 145, 0.3), 0px 14px 11px 0px rgba(255, 171, 145, 0.2), 0px 1px 5px -5px rgba(255, 171, 145, 0.6)`,
+          // boxShadow: `0px 2px 8px -1px ${toRGB(
+          //   primary.dark,
+          //   0.3
+          // )}, 0px 14px 11px 0px ${toRGB(
+          //   primary.dark,
+          //   0.2
+          // )}, 0px 1px 5px -5px ${toRGB(primary.dark, 0.6)}`,
         }}
       >
         <Link
@@ -77,12 +82,39 @@ const SharedLayout = () => {
             alignItems: "center",
             mt: "2px",
             gap: 2,
-            " .active": { color: secondary.main },
+            " .active": {
+              color: secondary.main,
+              " :after": {
+                transform: "scaleX(1)",
+                opacity: 1,
+                bgcolor: secondary.main
+              },
+            },
             " a": {
+              position: "relative",
               color: "white",
               transition: "150ms ease",
+              ":after": {
+                content: "''",
+                position: "absolute",
+                left: 0,
+                bottom: -6,
+                width: "100%",
+                height: "3px",
+                bgcolor: "white",
+                borderRadius: rounding.sm,
+                opacity: 0,
+                transform: "scaleX(0)",
+                transformOrigin: "center",
+                transition: "all 300ms ease",
+                boxShadow: "0 2px 3px -1px #ffffff"
+              },
               ":hover": {
-                color: secondary.light,
+                color: secondary.main,
+                " :after": {
+                  transform: "scaleX(1)",
+                  opacity: 1,
+                },
               },
             },
           }}
@@ -101,7 +133,9 @@ const SharedLayout = () => {
               ml: "auto",
               color: "white",
             }}
-          >{instance}</Typography>
+          >
+            {instance}
+          </Typography>
         ) : (
           <Link
             to="https://learn-apex-backend.onrender.com/oauth2"
@@ -110,6 +144,7 @@ const SharedLayout = () => {
             <Button
               sx={{
                 bgcolor: primary.dark,
+                backgroundImage: gradients.blue_purple,
                 color: "white",
                 border: `2px solid ${secondary.main}`,
                 borderRadius: rounding.md,
@@ -117,6 +152,7 @@ const SharedLayout = () => {
                 ":hover": {
                   bgcolor: secondary.main,
                   color: "black",
+                  border: `2px solid ${primary.dark}`,
                 },
               }}
             >

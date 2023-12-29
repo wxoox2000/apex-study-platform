@@ -8,6 +8,7 @@ import {
 import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import { toRGB } from "../Components/Reused styled components/HexToRGBA";
 
 const defaultData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 const Courses = () => {
@@ -21,7 +22,7 @@ const Courses = () => {
   }, []);
   const { primary, secondary, rounding } = useThemization();
   return (
-    <GradientBox styles={{ pt: "72px" }}>
+    <GradientBox bgColor={secondary.light} styles={{ pt: "72px",}}>
       <Box sx={{ display: "flex" }}>
         <Box id="under" sx={{ width: "328px", height: "100px" }}></Box>
         <Box
@@ -31,28 +32,30 @@ const Courses = () => {
             width: "270px",
             height: "100%",
             zIndex: 100,
-            top: "72px",
-            p: 2,
+            top: "68px",
+            padding: "24px 24px 100px",
             display: "flex",
             flexDirection: "column",
-            gap: 2,
+            gap: 4,
             overflowY: "scroll",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
             "::-webkit-scrollbar": {
               display: "none",
             },
-            bgcolor: "rgba(121, 135, 203, 0.543)",
-            borderRight: `1px solid ${secondary.light}`,
-            boxShadow: `2px 6px 8px -1px rgba(255, 171, 145, 0.3), 14px 8px 11px 0px rgba(255, 171, 145, 0.2), 1px 6px 5px -5px rgba(255, 171, 145, 0.6)`,
+            borderRight: `2px solid transparent`,
+            // backgroundImage: gradients.lime_skyBlue,
+            // bgcolor: primary.main,
+            // backgroundBlendMode: "overlay",
+            boxShadow: ` 4px -2px 5px -2px ${toRGB(primary.dark,0.9)}, inset -1px 0px 5px -2px ${toRGB(primary.dark,0.5)} , inset -3px 0px 6px -1px ${toRGB(primary.dark,0.2)},inset 5px 4px 6px -2px ${toRGB(primary.dark,0.8)}`,
           }}
         >
           {/* <Box sx={{position: "absolute"}}></Box> */}
           {dataBlocks.map((_, index) => {
             return (
-              <Accordion key={nanoid()} sx={{ fontFamily: "orbitron" }}>
+              <Accordion key={nanoid()} sx={{ fontFamily: "orbitron",}}>
                 <AccordionSummary>
-                  <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
+                  <Typography sx={{ fontSize: 20, fontWeight: 500, color: primary.dark }}>
                     {`Block ${index + 1}`}
                   </Typography>
                 </AccordionSummary>
@@ -63,16 +66,18 @@ const Courses = () => {
                     gap: 2,
                     a: {
                       textDecoration: "none",
-                      color: "white",
+                      color: primary.dark,
                       fontSize: 16,
                       fontWeight: 300,
                       transition: "all 150ms ease",
                       p: 1,
+                      border: "3px solid transparent",
+                      borderRadius: rounding.md,
                       ":hover": {
-                        color: secondary.light,
-                        bgcolor: primary.light,
-                        boxShadow: "1px 6px 5px -5px rgba(255, 171, 145, 1)",
-                        borderRadius: rounding.sm,
+                        border: "3px solid transparent",
+                        // backgroundImage: gradients.lime_skyBlue,
+                        boxShadow: `inset 2px 2px 7px 0px ${toRGB(primary.dark,0.5)}, inset 3px 3px 10px 2px ${toRGB(primary.dark,0.25)}, 2px 2px 3px -1px ${toRGB(primary.dark,0.6)}, 7px 3px 8px 0px ${toRGB(primary.dark,0.3)}, 0px 0px 8px -1px ${toRGB(primary.dark,0.5)}`,
+                        borderRadius: rounding.md,
                       },
                     },
                   }}

@@ -2,8 +2,14 @@ import { Box, SxProps } from "@mui/material";
 import { useThemization } from "../../Hooks/ThemizationHook";
 import { Theme } from "@emotion/react";
 
-const GradientBox = ({ children, styles }: { children: React.ReactElement, styles?: SxProps<Theme> }) => {
-  const { primary, accent } = useThemization();
+type GradBoxProps = {
+  children: React.ReactElement;
+  styles?: SxProps<Theme>;
+  gradient?: string;
+  bgColor?: string;
+};
+const GradientBox = ({ children, styles, gradient, bgColor }: GradBoxProps) => {
+  // const { primary, accent } = useThemization();
   return (
     <Box
       sx={{
@@ -11,13 +17,9 @@ const GradientBox = ({ children, styles }: { children: React.ReactElement, style
         height: "100vh",
         pt: 14,
         fontFamily: "ubuntu",
-        backgroundImage: `linear-gradient(
-            180deg,
-            ${primary.dark} 0%,
-            ${primary.light} 45%,
-            ${accent.light} 100%
-          );`,
-          ...styles,
+        bgcolor: bgColor,
+        backgroundImage: gradient,
+        ...styles,
       }}
     >
       {children}

@@ -8,17 +8,22 @@ export const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} {...props} />
 ))(() => ({
   backgroundColor: "transparent",
+  backdropFilter: "blur(4px)",
   borderRadius: "8px",
-  border: "1px solid",
+  border: "2px solid",
   borderBottom: "3px solid",
-  borderColor: "#ffab91",
+  borderColor: "transparent",
+  boxShadow: `inset 3px 2px 7px 0px rgba(122,90,248,0.5), inset 5px 4px 10px 2px rgba(122,90,248,0.25), 3px 2px 4px -1px rgba(122,90,248,0.6), 4px 5px 8px 0px rgba(122,90,248,0.3), 0px 0px 8px -1px rgba(122,90,248,0.5)`,
   color: "white",
   ".MuiAccordionSummary-expandIconWrapper": {
-    color:  "white",
+    color: "#7a5af8",
   },
   ":hover .MuiAccordionSummary-expandIconWrapper": {
-    color: "#ffab91",
-  }
+    color: "#ff22e9",
+  },
+  ":before": {
+    backgroundColor: "transparent",
+  },
 }));
 
 export const AccordionSummary = styled((props: AccordionSummaryProps) => (
@@ -27,7 +32,7 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
       <ArrowForwardIosSharpIcon
         sx={{
           fontSize: 18,
-          transition: "color 150ms ease"
+          transition: "color 150ms ease",
         }}
       />
     }
@@ -36,6 +41,6 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
 ))(() => ({
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
-},
+  },
   "& .MuiAccordionSummary-content": {},
 }));
