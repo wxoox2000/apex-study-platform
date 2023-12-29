@@ -1,5 +1,4 @@
 import { Box, SxProps } from "@mui/material";
-import { useThemization } from "../../Hooks/ThemizationHook";
 import { Theme } from "@emotion/react";
 
 type GradBoxProps = {
@@ -9,7 +8,6 @@ type GradBoxProps = {
   bgColor?: string;
 };
 const GradientBox = ({ children, styles, gradient, bgColor }: GradBoxProps) => {
-  // const { primary, accent } = useThemization();
   return (
     <Box
       sx={{

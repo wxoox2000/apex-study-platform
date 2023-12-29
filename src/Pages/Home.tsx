@@ -3,7 +3,7 @@ import { useThemization } from "../Hooks/ThemizationHook";
 import GradientBox from "../Components/Reused styled components/GradientBox";
 
 const Home = () => {
-  const { secondary, gradients, primary } = useThemization();
+  const { secondary, primary } = useThemization();
 
   return (
     <GradientBox bgColor={secondary.light} styles={{ "h1, h2, p": { fontFamily: "ubuntu" } }}>
