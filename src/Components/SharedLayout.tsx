@@ -2,8 +2,16 @@ import { DataObject } from "@mui/icons-material";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useThemization } from "../Hooks/ThemizationHook";
-import { useSelector } from "react-redux";
-import { selectInstance, selectIsLoggedIn } from "../Redux/Auth/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectAccessToken,
+  selectInstance,
+  selectIsLoggedIn,
+  selectSF_Logging,
+} from "../Redux/Auth/selectors";
+import { logout } from "../API's/auth";
+import { resetUserData, setLoggingToSf } from "../Redux/Auth/AuthSlice";
+import { PropagateLoader } from "react-spinners";
 
 export const StyledLink = ({
   to,
@@ -22,6 +30,23 @@ const SharedLayout = () => {
   const { primary, secondary, rounding, gradients } = useThemization();
   const loggedIn = useSelector(selectIsLoggedIn);
   const instance = useSelector(selectInstance);
+  const token = useSelector(selectAccessToken);
+  const logging = useSelector(selectSF_Logging);
+  const dispatch = useDispatch();
+  const onClick = async () => {
+   try {
+    instance && token && logout(instance, token)
+    dispatch(resetUserData())
+    // const call = () => console.log("OK");
+    // const resp = await fetch(`${instance}/services/oauth2/revoke?token=${token}&callback=${call}`, {mode: "no-cors"})
+    // console.log(resp, resp.status);
+   } catch (error) {
+    console.log(error);
+   }
+  };
+  const SF_logging = () => {
+    dispatch(setLoggingToSf())
+  }
   return (
     <Container
       disableGutters
@@ -87,7 +112,7 @@ const SharedLayout = () => {
               " :after": {
                 transform: "scaleX(1)",
                 opacity: 1,
-                bgcolor: secondary.main
+                bgcolor: secondary.main,
               },
             },
             " a": {
@@ -107,7 +132,7 @@ const SharedLayout = () => {
                 transform: "scaleX(0)",
                 transformOrigin: "center",
                 transition: "all 300ms ease",
-                boxShadow: "0 2px 3px -1px #ffffff"
+                boxShadow: "0 2px 3px -1px #ffffff",
               },
               ":hover": {
                 color: secondary.main,
@@ -124,25 +149,22 @@ const SharedLayout = () => {
           <StyledLink to="/about">About</StyledLink>
         </Box>
         {loggedIn ? (
-          <Typography
-            sx={{
-              letterSpacing: "0.05em",
-              fontWeight: 500,
-              fontSize: 18,
-              mt: "2px",
-              ml: "auto",
-              color: "white",
-            }}
-          >
-            {instance}
-          </Typography>
-        ) : (
-          <Link
-            to="https://learn-apex-backend.onrender.com/oauth2"
-            style={{ marginLeft: "auto" }}
-          >
+          <>
+            <Typography
+              sx={{
+                letterSpacing: "0.05em",
+                fontWeight: 500,
+                fontSize: 18,
+                mt: "2px",
+                ml: "auto",
+                color: "white",
+              }}
+            >
+              {instance}
+            </Typography>
             <Button
               sx={{
+                ml: 2,
                 bgcolor: primary.dark,
                 backgroundImage: gradients.blue_purple,
                 color: "white",
@@ -155,8 +177,37 @@ const SharedLayout = () => {
                   border: `2px solid ${primary.dark}`,
                 },
               }}
+              onClick={onClick}
             >
-              Login to Salesforce
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Link
+            to="https://learn-apex-backend.onrender.com/oauth2"
+            style={{ marginLeft: "auto" }}
+            onClick={SF_logging}
+          >
+            <Button
+              sx={{
+                bgcolor: primary.dark,
+                backgroundImage: gradients.blue_purple,
+                color: "white",
+                border: `2px solid ${secondary.main}`,
+                borderRadius: rounding.md,
+                fontWeight: 700,
+                minWidth: "200px",
+                minHeight: "40px",
+                position: "relative",
+                ":hover": {
+                  bgcolor: secondary.main,
+                  color: "black",
+                  border: `2px solid ${primary.dark}`,
+                },
+              }}
+            >
+              {logging && <PropagateLoader color={secondary.main} cssOverride={{position: "absolute", top: "calc(50% - 7px)", left: "88px"}} />}
+              {!logging && "Login to Salesforce"}
             </Button>
           </Link>
         )}

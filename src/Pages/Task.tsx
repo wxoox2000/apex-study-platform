@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { useThemization } from "../Hooks/ThemizationHook";
 import { toRGB } from "../Components/Reused styled components/HexToRGBA";
+import { RingLoader } from "react-spinners";
 
 const defValue = `public Map<String,String> getContextUserInformation(){
     //code here
@@ -159,6 +160,7 @@ const Task = () => {
         <Box>
           <Box sx={{ borderRadius: rounding.lg, overflow: "hidden" }}>
             <Editor
+            loading={<RingLoader color={primary.dark} size={200}/>}
               height="500px"
               width="700px"
               options={options}
