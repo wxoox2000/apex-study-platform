@@ -9,6 +9,7 @@ const SF_Auth = () => {
     const params:
       | {
           token?: string | null;
+          refresh?: string | null;
           instance?: string | null;
           userID?: string | null;
           orgID?: string | null;
@@ -20,6 +21,7 @@ const SF_Auth = () => {
         dispatch(
           setUserData({
             accessToken: params.token,
+            refreshToken: params.refresh,
             instance: params.instance,
             userID: params.userID,
             orgID: params.orgID,

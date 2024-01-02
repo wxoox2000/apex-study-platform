@@ -34,19 +34,19 @@ const SharedLayout = () => {
   const logging = useSelector(selectSF_Logging);
   const dispatch = useDispatch();
   const onClick = async () => {
-   try {
-    instance && token && logout(instance, token)
-    dispatch(resetUserData())
-    // const call = () => console.log("OK");
-    // const resp = await fetch(`${instance}/services/oauth2/revoke?token=${token}&callback=${call}`, {mode: "no-cors"})
-    // console.log(resp, resp.status);
-   } catch (error) {
-    console.log(error);
-   }
+    try {
+      const reset = await logout(instance!, token!);
+      if (reset.status !== 200) {
+        throw new Error("An error occured, please reload the page and try again")
+      }
+      dispatch(resetUserData());
+    } catch (error) {
+      console.log(error);
+    }
   };
   const SF_logging = () => {
-    dispatch(setLoggingToSf())
-  }
+    dispatch(setLoggingToSf());
+  };
   return (
     <Container
       disableGutters
@@ -206,7 +206,16 @@ const SharedLayout = () => {
                 },
               }}
             >
-              {logging && <PropagateLoader color={secondary.main} cssOverride={{position: "absolute", top: "calc(50% - 7px)", left: "88px"}} />}
+              {logging && (
+                <PropagateLoader
+                  color={secondary.main}
+                  cssOverride={{
+                    position: "absolute",
+                    top: "calc(50% - 7px)",
+                    left: "88px",
+                  }}
+                />
+              )}
               {!logging && "Login to Salesforce"}
             </Button>
           </Link>

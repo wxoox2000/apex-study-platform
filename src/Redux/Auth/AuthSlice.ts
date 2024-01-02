@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type authInitState = {
   accessToken: null | string;
+  refreshToken: null | string;
   instance: null | string;
   userID: null | string;
   orgID: null | string;
@@ -10,6 +11,7 @@ export type authInitState = {
 };
 const initialState: authInitState = {
   accessToken: null,
+  refreshToken: null,
   instance: null,
   userID: null,
   orgID: null,
@@ -26,6 +28,7 @@ const authSlice = createSlice({
       action: { payload: Omit<authInitState, "isLoggedIn"| "sfLogging">; type: string }
     ) {
       state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
       state.instance = action.payload.instance;
       state.orgID = action.payload.orgID;
       state.userID = action.payload.userID;
@@ -34,6 +37,7 @@ const authSlice = createSlice({
     },
     resetUserData(state) {
       state.accessToken = null;
+      state.refreshToken = null;
       state.instance = null;
       state.userID = null;
       state.orgID = null;
