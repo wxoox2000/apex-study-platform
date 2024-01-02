@@ -1,5 +1,5 @@
 import axios from "axios";
-axios.defaults.baseURL = "https://apex-backend-dev.onrender.com/oauth2"
+axios.defaults.baseURL = "https://learn-apex-backend.onrender.com/oauth2"
 axios.defaults.headers.common.Accept = "*";
 export const login = async () => {
   const resp = await axios.get("/");
