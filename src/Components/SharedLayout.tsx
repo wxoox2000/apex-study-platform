@@ -36,9 +36,9 @@ const SharedLayout = () => {
   const onClick = async () => {
     try {
       const reset = await logout(instance!, token!);
-      if (reset.status !== 200) {
-        throw new Error("An error occured, please reload the page and try again")
-      }
+      // if (reset.status !== 200) {
+      //   throw new Error("An error occured, please reload the page and try again")
+      // }
       dispatch(resetUserData());
     } catch (error) {
       console.log(error);

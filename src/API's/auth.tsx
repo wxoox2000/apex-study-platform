@@ -8,8 +8,8 @@ export const login = async () => {
 };
 
 export const logout = async (instance: string, token: string) => {
-  const resp = await axios.post(
-    `/logout`, {accessToken: token, instanceUrl: instance});
+  const resp = await axios.get(
+    `/logout?accessToken=${token}&instanceUrl=${instance}`);
     console.log(resp);
   return resp;
 };
