@@ -25,7 +25,7 @@ export const refreshSF_Token = createAsyncThunk(
     const state: any = thunkAPI.getState();
     const refreshToken = state.auth.refreshToken;
     const accessToken = state.auth.accessToken;
-    const instanceUrl = state.auth.instanceURL;
+    const instanceUrl = state.auth.instanceUrl;
     try {
       const resp = await axios.get(
         `/refresh?refreshToken=${refreshToken}&accessToken=${accessToken}&instanceUrl=${instanceUrl}`
