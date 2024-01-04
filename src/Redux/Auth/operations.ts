@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://learn-apex-backend.onrender.com";
+axios.defaults.baseURL = "https://learn-apex-backend.onrender.com/oauth2";
 
 // https://apex-backend-dev.onrender.com/oauth2 for dev server
 
