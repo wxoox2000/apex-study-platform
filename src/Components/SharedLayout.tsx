@@ -4,14 +4,14 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { useThemization } from "../Hooks/ThemizationHook";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectAccessToken,
   selectInstance,
   selectIsLoggedIn,
   selectSF_Logging,
 } from "../Redux/Auth/selectors";
-import { logout } from "../API's/auth";
-import { resetUserData, setLoggingToSf } from "../Redux/Auth/AuthSlice";
+// import { logout } from "../API's/auth";
+import { setLoggingToSf } from "../Redux/Auth/AuthSlice";
 import { PropagateLoader } from "react-spinners";
+import { logout } from "../Redux/Auth/operations";
 
 export const StyledLink = ({
   to,
@@ -30,19 +30,19 @@ const SharedLayout = () => {
   const { primary, secondary, rounding, gradients } = useThemization();
   const loggedIn = useSelector(selectIsLoggedIn);
   const instance = useSelector(selectInstance);
-  const token = useSelector(selectAccessToken);
   const logging = useSelector(selectSF_Logging);
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const onClick = async () => {
-    try {
-      const reset = await logout(instance!, token!);
-      if (reset.status !== 200) {
-        throw new Error("An error occured, please reload the page and try again")
-      }
-      dispatch(resetUserData());
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const reset = await logout(instance!, accessToken!, refreshToken!);
+    //   if (reset.status !== 200) {
+    //     throw new Error("An error occured, please reload the page and try again")
+    //   }
+    //   dispatch(resetUserData());
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    dispatch(logout())
   };
   const SF_logging = () => {
     dispatch(setLoggingToSf());

@@ -22,7 +22,7 @@ const SF_Auth = () => {
           setUserData({
             accessToken: params.token,
             refreshToken: params.refresh,
-            instance: params.instance,
+            instanceUrl: params.instance,
             userID: params.userID,
             orgID: params.orgID,
           })
