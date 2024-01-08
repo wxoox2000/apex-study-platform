@@ -1,19 +1,90 @@
 import { Editor, Monaco } from "@monaco-editor/react";
-import { Box, Button, Typography } from "@mui/material";
-import { useRef } from "react";
+import { Box, Button, List, ListItem, Typography } from "@mui/material";
+import { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { useThemization } from "../Hooks/ThemizationHook";
 import { toRGB } from "../Components/Reused styled components/HexToRGBA";
 import { RingLoader } from "react-spinners";
+import { nanoid } from "nanoid";
+import { Done, Error } from "@mui/icons-material";
+import { runTests } from "../API's/auth";
+import { useSelector } from "react-redux";
+import {
+  selectAccessToken,
+  selectInstance,
+  selectRefreshToken,
+} from "../Redux/Auth/selectors";
 
-const defValue = `public Map<String,String> getContextUserInformation(){
-    //code here
-}`;
+const defValue = `
+    //code here`;
+type defResult = {
+  line: number;
+  column: number;
+  compiled: boolean;
+  success: boolean;
+  compileProblem: string | null;
+  exceptionStackTrace: string | null;
+  exceptionMessage: string | null;
+};
+const defResult: defResult[] = [
+  {
+    line: -1,
+    column: -1,
+    compiled: true,
+    success: true,
+    compileProblem: null,
+    exceptionStackTrace: null,
+    exceptionMessage: null,
+  },
+  {
+    line: 30,
+    column: 1,
+    compiled: true,
+    success: false,
+    compileProblem: null,
+    exceptionStackTrace:
+      "Class.CarTest.car_values: line 13, column 1\nAnonymousBlock: line 17, column 1\nAnonymousBlock: line 17, column 1",
+    exceptionMessage:
+      "System.AssertException: Assertion Failed: Expected: 200, Actual: 20000",
+  },
+  {
+    line: -1,
+    column: -1,
+    compiled: true,
+    success: true,
+    compileProblem: null,
+    exceptionStackTrace: null,
+    exceptionMessage: null,
+  },
+  {
+    line: -1,
+    column: -1,
+    compiled: true,
+    success: true,
+    compileProblem: null,
+    exceptionStackTrace: null,
+    exceptionMessage: null,
+  },
+  {
+    line: -1,
+    column: -1,
+    compiled: true,
+    success: true,
+    compileProblem: null,
+    exceptionStackTrace: null,
+    exceptionMessage: null,
+  },
+];
 const Task = () => {
   const { secondary, primary, rounding, gradients, accent } = useThemization();
   const location = useLocation();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [testResults, setTestResults] = useState<Array<defResult> | null>(null);
+  const [loading, setLoading] = useState<Boolean>(false);
+  const access = useSelector(selectAccessToken);
+  const refresh = useSelector(selectRefreshToken);
+  const instance = useSelector(selectInstance);
 
   const handleEditorDidMount = (
     editor: monaco.editor.IStandaloneCodeEditor,
@@ -22,8 +93,23 @@ const Task = () => {
     editorRef.current = editor;
   };
 
-  const showValue = () => {
-    alert(editorRef.current?.getValue());
+  const showValue = async () => {
+    // alert(editorRef.current?.getValue());
+    setLoading(true);
+    try {
+      const res = await runTests(
+        access!,
+        refresh!,
+        instance!,
+        editorRef.current?.getValue()!
+      );
+      console.log(res.result);
+      setTestResults(res.result);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   const options: monaco.editor.IStandaloneEditorConstructionOptions = {
@@ -52,7 +138,13 @@ const Task = () => {
             zIndex: 10,
             backgroundImage: "inherit",
             borderRadius: rounding.lg,
-            boxShadow: `3px 3px 5px -1px ${toRGB(primary.dark,0.5)}, 7px 6px 8px 1px ${toRGB(primary.dark,0.3)}, 0px 0px 7px -1px ${toRGB(primary.dark,0.5)}`
+            boxShadow: `3px 3px 5px -1px ${toRGB(
+              primary.dark,
+              0.5
+            )}, 7px 6px 8px 1px ${toRGB(
+              primary.dark,
+              0.3
+            )}, 0px 0px 7px -1px ${toRGB(primary.dark, 0.5)}`,
           }}
         >
           <Box
@@ -98,12 +190,17 @@ const Task = () => {
               "h3, p": {
                 fontFamily: "ubuntu",
               },
+              code: {
+                fontFamily: "orbitron",
+                fontWeight: 600,
+                bgcolor: secondary.main,
+              },
               position: "absolute",
               top: "5px",
               left: "5px",
               bgcolor: secondary.light,
               borderRadius: rounding.md,
-              boxShadow: `inset 3px 1px 5px 0px ${toRGB(primary.dark,0.6)}`
+              boxShadow: `inset 3px 1px 5px 0px ${toRGB(primary.dark, 0.6)}`,
             }}
           >
             <Typography
@@ -116,51 +213,54 @@ const Task = () => {
               component={"p"}
               sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-              laudantium, iste porro atque similique voluptates veniam debitis
-              voluptas aut officiis aspernatur autem eveniet esse consectetur
-              necessitatibus quaerat nobis consequuntur quisquam. Accusamus unde
-              quibusdam officiis perferendis quod mollitia, sed, fugiat error
-              delectus itaque eum illum repellat tempore deleniti assumenda?
-              Eius voluptas, nobis necessitatibus quasi incidunt amet hic
-              voluptate corporis doloremque accusantium! Officiis ex id alias
-              maxime vero unde hic iste repellat amet laudantium nisi impedit
-              quas laborum aliquam neque odio eveniet, nam temporibus nemo
-              commodi, tenetur numquam dicta repudiandae culpa? Aut! Beatae
-              adipisci molestias, quis laborum, deserunt ullam assumenda omnis
-              accusantium nulla excepturi in error nisi fuga, ipsa vel? In natus
-              numquam nisi aliquid debitis eligendi. Iusto, accusantium nihil.
-              Optio, molestiae? Hic quae non modi quidem? Modi nemo, eligendi
-              tempora magni laboriosam quae ut. Debitis deserunt tempore
-              cupiditate eius iste quibusdam ad voluptatem optio, repellat
-              nostrum at ipsa iure pariatur suscipit. Nostrum labore doloribus
-              velit officiis aliquam, voluptatum perferendis dolore harum hic
-              perspiciatis laboriosam corporis nobis repellendus mollitia
-              repudiandae dolorum ipsam quasi illum molestiae? Voluptas deserunt
-              sunt voluptates pariatur iusto accusantium? Aliquid, corrupti sit
-              adipisci laudantium explicabo dignissimos, harum aliquam incidunt
-              delectus fugiat quam, inventore rem maiores natus. Obcaecati id,
-              officiis distinctio aliquam nobis sunt est voluptatum? Rem
-              adipisci ea vero? Odio, facilis reprehenderit possimus accusantium
-              earum eligendi alias iusto asperiores architecto cupiditate
-              aspernatur nesciunt odit totam, dignissimos aliquam incidunt saepe
-              perspiciatis. Temporibus maxime expedita, neque reprehenderit iure
-              cumque facilis quisquam! Accusamus quasi sit, rem architecto nobis
-              veritatis facere ipsam, voluptatibus eius eveniet exercitationem
-              numquam reprehenderit. Architecto minima, deleniti unde sapiente
-              cumque quo perspiciatis. Deleniti veniam magnam doloribus soluta
-              voluptatibus sint. Fugit suscipit consequuntur alias magnam
-              obcaecati quos temporibus nostrum doloremque quia consectetur
-              ipsum amet vel quidem voluptatibus, numquam harum beatae possimus
-              est labore sapiente veritatis vero. Doloremque pariatur quasi
-              maxime?
+              Create a class called <code>Car</code>.
             </Typography>
+            <Typography
+              component={"p"}
+              sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
+            >
+              Create the following variables within the class:
+            </Typography>
+            <List>
+              <ListItem>
+                <Typography
+                  component={"p"}
+                  sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
+                >
+                  <code>motor</code> String
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  component={"p"}
+                  sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
+                >
+                  <code>maximumSpeed</code> Integer
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  component={"p"}
+                  sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
+                >
+                  <code>passengers</code> Integer
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  component={"p"}
+                  sx={{ fontSize: 18, fontWeight: 300, color: accent.black }}
+                >
+                  <code>color</code> String
+                </Typography>
+              </ListItem>
+            </List>
           </Box>
         </Box>
         <Box>
-          <Box sx={{ borderRadius: rounding.lg, overflow: "hidden" }}>
+          <Box sx={{ borderRadius: rounding.lg, overflow: "hidden", mb: 5 }}>
             <Editor
-            loading={<RingLoader color={primary.dark} size={200}/>}
+              loading={<RingLoader color={primary.dark} size={200} />}
               height="500px"
               width="700px"
               options={options}
@@ -170,6 +270,80 @@ const Task = () => {
               onMount={handleEditorDidMount}
             />
           </Box>
+          {loading && (
+            <Box sx={{ margin: "0 auto", width: "fit-content" }}>
+              <RingLoader color={primary.dark} size={200} />
+            </Box>
+          )}
+          {testResults && (
+            <List>
+              {testResults.map((res, idx) => {
+                if (res.compiled && res.success) {
+                  return (
+                    <ListItem
+                      key={nanoid()}
+                      sx={{
+                        width: "100%",
+                        border: "2px solid green",
+                        padding: "8px, 12px",
+                        borderRadius: rounding.md,
+                        ":not(:last-of-type)": {
+                          mb: 3,
+                        },
+                        gap: 2,
+                      }}
+                    >
+                      <Done color="success" />
+                      <Typography>
+                        Test{idx + 1} successfully passed!
+                      </Typography>
+                    </ListItem>
+                  );
+                }
+                return (
+                  <ListItem
+                    key={nanoid()}
+                    sx={{
+                      width: "700px",
+                      border: "2px solid red",
+                      padding: "8px, 12px",
+                      borderRadius: rounding.md,
+                      ":not(:last-of-type)": {
+                        mb: 3,
+                      },
+                      gap: 2,
+                    }}
+                  >
+                    <Error color="error" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        "& p": {
+                          fontFamily: "ubuntu",
+                        },
+                      }}
+                    >
+                      <Typography component="h3">
+                        Test{idx + 1}{" "}
+                        {!res.compiled ? "failed to compile" : "failed"}
+                      </Typography>
+                      <Typography component="p">
+                        {res.compileProblem}
+                      </Typography>
+                      <Typography component="p">
+                        {res.exceptionStackTrace}
+                      </Typography>
+                      <Typography component="p">
+                        {res.exceptionMessage}
+                      </Typography>
+                    </Box>
+                  </ListItem>
+                );
+              })}
+            </List>
+          )}
           <Button
             sx={{
               margin: "0 auto",
@@ -185,7 +359,19 @@ const Task = () => {
               backgroundBlendMode: "overlay",
               backgroundImage: gradients.blue_steel,
               bgcolor: secondary.light,
-              boxShadow: `inset 3px 2px 7px 0px ${toRGB(primary.dark,0.5)}, inset 5px 4px 10px 2px ${toRGB(primary.dark,0.25)}, 3px 2px 4px -1px ${toRGB(primary.dark,0.6)}, 4px 5px 8px 0px ${toRGB(primary.dark,0.3)}, 0px 0px 8px -1px ${toRGB(primary.dark,0.5)}`,
+              boxShadow: `inset 3px 2px 7px 0px ${toRGB(
+                primary.dark,
+                0.5
+              )}, inset 5px 4px 10px 2px ${toRGB(
+                primary.dark,
+                0.25
+              )}, 3px 2px 4px -1px ${toRGB(
+                primary.dark,
+                0.6
+              )}, 4px 5px 8px 0px ${toRGB(
+                primary.dark,
+                0.3
+              )}, 0px 0px 8px -1px ${toRGB(primary.dark, 0.5)}`,
               ":hover": {
                 bgcolor: "transparent",
                 boxShadow: `inset 3px 2px 7px 0px ${toRGB(
@@ -194,7 +380,13 @@ const Task = () => {
                 )}, inset 5px 4px 10px 2px ${toRGB(
                   secondary.light,
                   0.35
-                )}, 3px 2px 4px -1px ${toRGB(primary.dark,0.6)}, 4px 5px 8px 0px ${toRGB(primary.dark,0.3)}, 0px 0px 8px -1px ${toRGB(primary.dark,0.5)}`,
+                )}, 3px 2px 4px -1px ${toRGB(
+                  primary.dark,
+                  0.6
+                )}, 4px 5px 8px 0px ${toRGB(
+                  primary.dark,
+                  0.3
+                )}, 0px 0px 8px -1px ${toRGB(primary.dark, 0.5)}`,
                 color: "white",
               },
             }}
